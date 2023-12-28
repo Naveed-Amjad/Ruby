@@ -140,8 +140,12 @@ class WeatherDataProcessor
     filenames = @address
 
     filenames.each do |filename|
-      table = CSV.parse(File.read(filename), headers: true)
+      table = CSV.parse(File.read(filename), headers: true, skip_blanks: true)
       date_string = table[0][0]
+      puts "_____________________________________"
+
+      puts date_string
+      puts "_____________________________________"
       parsed_date = Date.parse(date_string)
       month_name = parsed_date.strftime('%B')
 
@@ -159,6 +163,10 @@ class WeatherDataProcessor
 
       @tem_array.push(max_temp)
       @min_array.push(min_temp)
+
+      # we can make hashes to store max and min tempratures
+      maxTemp = {"max" => max}
+      minTemp = {"min" => min}
 
       puts "Max temperature in #{filename}: #{max_temp}"
       puts "Min temperature in #{filename}: #{min_temp}"
@@ -194,6 +202,7 @@ class WeatherDataProcessor
     min = @min_array.min
 
     puts "Max Temperature from all the files: #{max}"
+    puts "Min temrature: #{min}"
     puts "\n"
     puts "Min Temperature from all the files: #{min}"
   end
@@ -225,6 +234,6 @@ when 'task2'
 when 'task3'
   weather_processor.task_3
 else
-  puts "Invalid task. Please use 'task1', 'task2', or 'task3'."
+  puts "Invalid task input. Please use 'task1', 'task2', or 'task3' to execute that task."
 end
 
